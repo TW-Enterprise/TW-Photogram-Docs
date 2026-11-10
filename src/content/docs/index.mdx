@@ -1,0 +1,128 @@
+---
+title: Dokumentasi Resmi TW Photogram
+description: Panduan Pengguna Resmi & Dokumentasi Teknis TW Photogram — Platform Fotogrametri UAV, GIS, dan Analisis Bahaya Setara Agisoft Metashape Professional.
+template: splash
+hero:
+  tagline: Platform fotogrametri UAV, GIS, dan analisis bahaya — satu aplikasi desktop native tanpa dependensi runtime, dirancang dengan paritas 1:1 terhadap Agisoft Metashape Professional (64-bit).
+  image:
+    file: ../../assets/logo.png
+  actions:
+    - text: Panduan Pengguna
+      link: ./panduan-pengguna/01-pendahuluan-instalasi/
+      icon: right-arrow
+      variant: primary
+    - text: Matriks Paritas Metashape
+      link: ./engineering/metashape-parity-spec/
+      variant: secondary
+    - text: Unduh Manual PDF
+      link: /TW-Photogram-Docs/TW-Photogram-Manual-Book.pdf
+      icon: document
+      variant: minimal
+    - text: Repositori GitHub
+      link: https://github.com/TW-Enterprise/TW-Photogram
+      icon: external
+      variant: minimal
+---
+
+<div class="landing-status">
+  <span>🚁 Fotogrametri UAV & GIS Native • macOS, Windows, Linux • Rust 2024 • Zero-Dummy Policy</span>
+</div>
+
+<div class="pdf-download-card" style="margin: 1.5rem 0; padding: 1.25rem; border: 2px solid #00D2FF; border-radius: 0.75rem; background: color-mix(in srgb, #00D2FF 8%, transparent); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+  <div>
+    <h3 style="margin: 0; font-size: 1.15rem; color: var(--sl-color-white);">📖 Buku Panduan Pengguna Lengkap (Manual Book PDF)</h3>
+    <p style="margin: 0.25rem 0 0; font-size: 0.9rem; color: var(--sl-color-gray-3);">Dokumen resmi komprehensif mencakup 12 bab alur kerja fotogrametri, standar ASPRS 2014, SNI 8202:2015, dan spesifikasi rekayasa lengkap.</p>
+  </div>
+  <a href="/TW-Photogram-Docs/TW-Photogram-Manual-Book.pdf" download="TW-Photogram-Manual-Book.pdf" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; background: #00D2FF; color: #0b1120; font-weight: 700; font-size: 0.95rem; border-radius: 0.5rem; text-decoration: none;">
+    📥 Unduh Manual Book PDF
+  </a>
+</div>
+
+## Alur Kerja Fotogrametri 12 Tahap
+
+TW Photogram mengimplementasikan alur kerja fotogrametri digital lengkap dengan zero-dummy mathematics:
+
+<ol class="landing-steps">
+  <li>
+    <a href="./panduan-pengguna/01-pendahuluan-instalasi/">
+      <span class="landing-step-title">1. Instalasi & Data Sampel</span>
+      <span class="landing-step-summary">Persyaratan sistem, instalasi tanpa dependensi luar di macOS/Windows/Linux, dan pemuatan sampel 24-foto DJI.</span>
+    </a>
+  </li>
+  <li>
+    <a href="./panduan-pengguna/03-memulai-proyek/">
+      <span class="landing-step-title">2. Proyek & Georeferensi GCP</span>
+      <span class="landing-step-summary">Impor foto, ekstraksi metadata EXIF GPS WGS84, proyeksi metrik ENU, dan penandaan titik kontrol tanah (GCP).</span>
+    </a>
+  </li>
+  <li>
+    <a href="./panduan-pengguna/04-alur-kerja/">
+      <span class="landing-step-title">3. Penyelarasan SfM & MVS</span>
+      <span class="landing-step-summary">Deteksi sudut FAST, deskriptor BRIEF, 5-point RANSAC, SBA Levenberg-Marquardt, dan rekonstruksi Semi-Global Matching.</span>
+    </a>
+  </li>
+  <li>
+    <a href="./panduan-pengguna/05-dem-kontur-lereng/">
+      <span class="landing-step-title">4. DEM, Orto & Analisis Genangan</span>
+      <span class="landing-step-summary">Interpolasi TIN 2.5D, seamline nadir-dominan anti ghosting, simulasi aliran inersial lokal (Bates), dan ekspor lembar peta BIG.</span>
+    </a>
+  </li>
+</ol>
+
+## Jelajahi Dokumentasi
+
+<div class="landing-groups">
+  <section class="landing-group">
+    <h3>📖 Panduan Pengguna (User Manual)</h3>
+    <p>Tutorial langkah demi langkah bagi surveyor dan operator drone pemetaan.</p>
+    <ul>
+      <li><a href="./panduan-pengguna/01-pendahuluan-instalasi/">Bab 1: Pendahuluan & Instalasi</a></li>
+      <li><a href="./panduan-pengguna/02-antarmuka/">Bab 2: Mengenal Antarmuka & Panel Dock</a></li>
+      <li><a href="./panduan-pengguna/03-memulai-proyek/">Bab 3: Memulai Proyek & Penandaan GCP</a></li>
+      <li><a href="./panduan-pengguna/04-alur-kerja/">Bab 4: Alur Kerja 12 Tahap Pemrosesan</a></li>
+      <li><a href="./panduan-pengguna/05-dem-kontur-lereng/">Bab 5: DEM, Kontur, Lereng & Kalibrasi</a></li>
+      <li><a href="./panduan-pengguna/06-shapes-batas-wilayah/">Bab 6: Lapisan Batas Wilayah & Kliping</a></li>
+      <li><a href="./panduan-pengguna/07-simulasi-genangan/">Bab 7: Simulasi Genangan Air & Bahaya Banjir</a></li>
+      <li><a href="./panduan-pengguna/08-cetak-laporan/">Bab 8: Cetak Lembar Peta BIG & Laporan ASPRS</a></li>
+      <li><a href="./panduan-pengguna/09-gaussian-splatting/">Bab 9: 3D Gaussian Splatting & Brush</a></li>
+      <li><a href="./panduan-pengguna/10-ekspor-interoperabilitas/">Bab 10: Ekspor & Interoperabilitas QGIS/CAD</a></li>
+      <li><a href="./panduan-pengguna/11-pemecahan-masalah/">Bab 11: Solusi Pemecahan Masalah (FAQ)</a></li>
+      <li><a href="./panduan-pengguna/12-glosarium-referensi/">Bab 12: Glosarium Istilah & Standar</a></li>
+    </ul>
+  </section>
+
+  <section class="landing-group">
+    <h3>⚙️ Spesifikasi Rekayasa (Engineering Specs)</h3>
+    <p>Penjelasan rumus matematis, matriks paritas, dan landasan algoritme murni.</p>
+    <ul>
+      <li><a href="./engineering/metashape-parity-spec/">Matriks Paritas 1:1 Agisoft Metashape</a></li>
+      <li><a href="./engineering/drone-mapping-geometry/">Geometri Pemetaan Drone & Alternasi Yaw</a></li>
+      <li><a href="./engineering/metashape-camera-geometry/">Model Kamera & Distorsi Lensa Brown-Conrady</a></li>
+      <li><a href="./engineering/elevation-calibration/">Kalibrasi Elevasi, Geoid EGM2008 & DEMNAS</a></li>
+      <li><a href="./engineering/flood-model/">Model Solver Genangan Inersial (Bates 2010)</a></li>
+      <li><a href="./engineering/report-and-map-sheet/">Mesin Cetak Lembar Peta BIG & PDF Vektor</a></li>
+      <li><a href="./engineering/vector-and-boundaries/">Lapisan Vektor & Pemotongan Raster gdalwarp</a></li>
+      <li><a href="./engineering/gaussian-splatting/">Gaussian Splatting & Integrasi Brush</a></li>
+      <li><a href="./engineering/odm-algorithm-ports/">Algoritma Hasil Porting OpenSfM & ODM</a></li>
+      <li><a href="./engineering/ui-design-system/">Sistem Desain Antarmuka egui/eframe 60 FPS</a></li>
+      <li><a href="./engineering/infographics-and-dem-display/">Infografis Analitik & Tampilan Medan DEM</a></li>
+    </ul>
+  </section>
+
+  <section class="landing-group">
+    <h3>💻 Platform & Portabilitas</h3>
+    <p>Petunjuk khusus platform, verifikasi GPU, dan konfigurasi luring.</p>
+    <ul>
+      <li><a href="./platform/windows/">Paket Portabel Windows & Verifikasi Driver GPU</a></li>
+      <li><a href="./platform/windows-maps-verification/">Verifikasi Pengunduhan Basemap Offline</a></li>
+    </ul>
+  </section>
+
+  <section class="landing-group">
+    <h3>🔍 Reverse Engineering & Standar REA</h3>
+    <p>Dokumentasi benchmarking langsung terhadap biner Agisoft Metashape resmi.</p>
+    <ul>
+      <li><a href="./internal/rea-guide/">Panduan REA (Reverse Engineer Anything) Metashape</a></li>
+    </ul>
+  </section>
+</div>
