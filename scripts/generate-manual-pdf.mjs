@@ -261,7 +261,7 @@ async function generatePdf() {
       Panduan operasional komprehensif mulai dari pengolahan foto drone, GCP, penyejajaran SfM, Multi-View Stereo, DEM, ortomosaik, simulasi genangan, lembar peta standar BIG, hingga 3D Gaussian Splatting dengan paritas Agisoft Metashape Professional.
     </p>
     <div class="meta">
-      <strong>TW-Enterprise • WanDrone & Throttle Warrior</strong><br>
+      <strong>TW-Enterprise</strong> • Made with ❤️ by Throttle Warriors<br>
       Repositori: <a href="https://github.com/TW-Enterprise/TW-Photogram">github.com/TW-Enterprise/TW-Photogram</a><br>
       Dokumentasi Daring: <a href="https://tw-enterprise.github.io/TW-Photogram-Docs/">tw-enterprise.github.io/TW-Photogram-Docs</a>
     </div>

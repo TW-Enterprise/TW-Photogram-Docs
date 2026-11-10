@@ -25,4 +25,4 @@ pnpm run build
 
 ## 📄 Lisensi & Hak Cipta
 
-Hak Cipta © 2026 TW-Enterprise (WanDrone Palembang & Throttle Warrior). Seluruh hak cipta dilindungi undang-undang.
+Hak Cipta © 2026 TW-Enterprise • Made with ❤️ by Throttle Warriors. Seluruh hak cipta dilindungi undang-undang.
