@@ -56,3 +56,53 @@ cargo test --test report_tests --test infographic_tests --lib pipeline::report
 cargo run --release --example render_report -- project.twp out   # out.sheet.pdf, out.report.pdf
 pdfinfo out.report.pdf && pdftotext out.report.pdf - | head      # metadata and text extraction
 ```
+
+## Dedicated flood simulation report
+
+After a successful simulation, use **Cetak Laporan Banjir (PDF)** in the flood panel,
+then **Render**, **Simpan PDF**, and **Buka PDF / Cetak**. The existing print dialog
+also offers **Laporan banjir**. Indonesian is the default; English is selectable.
+Text pages default to A4 portrait and map sheets to A3 landscape.
+
+`flood_report::FloodReportSnapshot` freezes the exact run configuration and source
+rasters, domain shapes, CRS, timestamp and `Arc<FloodResult>`. Solver-relevant edits
+invalidate export eligibility. Derived hazard shapes do not invalidate a run.
+`FloodReportSpec` controls document identity/revision, reviewer, notes, logo, paper,
+map scale, overlays and selected stored frames. `build_flood_report` returns the
+existing vector `Document`; it accepts cancellation through the spec's shared flag.
+
+The report contains document control, executive metrics, geospatial metadata,
+methodology, numerical water budget, limitations, charts, thematic maps, six automatic
+time snapshots and parameter/reference appendices. Snapshots use the nearest stored
+frames to six equally spaced times, remove duplicates and share one depth scale.
+Area uses valid cells times `cell_m²`, with the explicit depth threshold 0.01 m.
+Ever-wet union area is separate from the largest simultaneous area in stored frames.
+Arrival uses depth > 0.05 m; inundation duration uses the configured threshold.
+
+HAND and connected bathtub reports are static: they do not claim velocity, arrival,
+duration, hydrograph or dynamic water-balance validation. Static hazard maps are
+available only for depth-only schemes. Solver elevations and prescribed stages are
+**local ENU**, not the configured DEM export vertical datum. Depth is relative metres.
+ISO 19115-1:2014 and ISO 19157-1:2023 guide metadata and quality disclosure; no
+certification or field-calibration claim is inferred from these headings.
+
+Reports include a true-colour orthomosaic overview when the source run has an
+orthomosaic. Thematic maps and time snapshots preserve its photographic RGB with
+a 55% flood overlay; DEM hillshade is the fallback when no orthomosaic exists.
+NODATA remains separate from dry/never-reached cells. Shapes are inventoried with attributes
+and SHA-256 hashes rather than dumping every coordinate. Rendering and atomic PDF
+saves run off the UI thread; generation checks reject late previews and stale print
+links, and preview textures upload on demand.
+
+```
+cargo test --test flood_report_tests
+cargo test --lib ui::print_dialog::flood_report_tests
+cargo run --example render_flood_report -- project.twp report.pdf [config.json] [en]
+cargo run --example render_flood_report -- --photos mapping_01 report.pdf
+cargo run --example render_flood_report -- project.twp report.pdf --build-ortho
+```
+
+The `--photos` path builds a real sparse-point DEM and a 0.10 m/px orthomosaic
+for integration QA, explicitly labelled as such. `--build-ortho` reconstructs the
+photographic background from an existing aligned project before running the report. It is not dense reconstruction, hydraulic calibration or evidence
+of survey accuracy. The regular path uses the saved project's DEM and flood config.
