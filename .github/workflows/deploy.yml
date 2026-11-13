@@ -41,6 +41,9 @@ jobs:
       - name: Install Chrome for PDF Generation
         run: npx puppeteer browsers install chrome
 
+      - name: Test PDF failure handling
+        run: pnpm test
+
       - name: Build site & Export Manual Book PDF
         env:
           DOCS_BASE: "/TW-Photogram-Docs"
@@ -52,7 +55,7 @@ jobs:
         with:
           name: TW-Photogram-Manual-Book-PDF
           path: dist/TW-Photogram-Manual-Book.pdf
-          if-no-files-found: warn
+          if-no-files-found: error
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3

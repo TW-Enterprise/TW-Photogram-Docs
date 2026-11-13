@@ -5,6 +5,9 @@ description: "Apa yang akan Anda lakukan: membangun DEM (DSM atau DTM) dengan op
 
 **Apa yang akan Anda lakukan:** membangun DEM (DSM atau DTM) dengan opsi yang tepat, mengatur tampilannya, membuat kontur dan raster turunan (lereng, aspek, hillshade, roughness, TRI), memotong DEM dengan batas, serta mengkalibrasi datum tinggi dan membandingkannya dengan DEMNAS.
 
+
+**Ingin menjalankan hujan dan genangan?** Ikuti [tutorial bergambar mapping_01 dari foto sampai Play](/TW-Photogram-Docs/panduan-pengguna/07-simulasi-genangan/#70-tutorial-bergambar-dari-foto-mapping_01-sampai-air-terlihat), dengan screenshot aplikasi macOS dan pemeriksaan hasil setiap tahap.
+
 ---
 
 ## 5.1 DSM atau DTM?
@@ -14,7 +17,7 @@ description: "Apa yang akan Anda lakukan: membangun DEM (DSM atau DTM) dengan op
 | **DSM** (Digital Surface Model) | Permukaan teratas: atap, tajuk pohon, kendaraan | Semua titik rapat | Ortorektifikasi, volume timbunan, model kota |
 | **DTM** (Digital Terrain Model) | Tanah saja | Titik kelas ASPRS 2 (Ground) | Kontur, lereng, simulasi genangan, desain |
 
-DTM memerlukan [Klasifikasi Titik Tanah](04-alur-kerja.md#44-klasifikasi-titik-tanah-asprs) terlebih dahulu. Bila titik kelas 2 tidak mencukupi, pembangunan DTM gagal dengan pesan jelas — tidak ada hasil "kira-kira".
+DTM memerlukan [Klasifikasi Titik Tanah](/TW-Photogram-Docs/panduan-pengguna/04-alur-kerja/#44-klasifikasi-titik-tanah-asprs) terlebih dahulu. Bila titik kelas 2 tidak mencukupi, pembangunan DTM gagal dengan pesan jelas — tidak ada hasil "kira-kira".
 
 ## 5.2 Dialog Bangun Model Elevasi Digital (DEM)
 
@@ -62,7 +65,7 @@ Buka tab Ortho → tombol **Batas** → bagian **PRODUK TURUNAN DEM** di dock ka
 | **halus** 0–4 | Jumlah iterasi penghalusan Chaikin (tiap iterasi melipatgandakan jumlah verteks) |
 | **Buat kontur (marching squares)** | Menjalankan penelusuran di thread latar; hasil menjadi lapisan **Kontur x,xx m** di bagian LAPISAN dengan label dari atribut `elevation` |
 
-Kontur indeks ditandai atribut `index = true` dan hanya kontur indeks yang diberi label di peta. Lapisan kontur ikut dalam lembar peta ([Bab 8](08-cetak-laporan.md)) dan dapat diekspor ke GeoJSON/SHP/KML/DXF lewat tombol **Ekspor…** pada lapisan.
+Kontur indeks ditandai atribut `index = true` dan hanya kontur indeks yang diberi label di peta. Lapisan kontur ikut dalam lembar peta ([Bab 8](/TW-Photogram-Docs/panduan-pengguna/08-cetak-laporan/)) dan dapat diekspor ke GeoJSON/SHP/KML/DXF lewat tombol **Ekspor…** pada lapisan.
 
 **Nilai yang disarankan**
 
@@ -124,12 +127,12 @@ Jika layanan BIG tidak merespons (timeout), gunakan impor GeoTIFF. Unduhan yang 
 
 ## 5.7 Memotong DEM dengan Batas dan Statistik Zonal
 
-Lihat [Bab 6 §6.7–6.8](06-shapes-batas-wilayah.md#67-potong-raster-dengan-batas) untuk **Potong DEM sekarang**, **Batalkan potongan**, dan **Statistik zonal** (luas, min/rata/maks, simpangan, volume di atas/bawah datum).
+Lihat [Bab 6 §6.7–6.8](/TW-Photogram-Docs/panduan-pengguna/06-shapes-batas-wilayah/#67-potong-raster-dengan-batas) untuk **Potong DEM sekarang**, **Batalkan potongan**, dan **Statistik zonal** (luas, min/rata/maks, simpangan, volume di atas/bawah datum).
 
 ## 5.8 Ekspor DEM
 
-Lihat [Bab 10](10-ekspor-interoperabilitas.md#102-dem): GeoTIFF WGS 84 (datum keluaran terpilih), GeoTIFF UTM, ESRI ASCII Grid, XYZ. Semua ekspor numerik menyertakan NODATA dan informasi datum/koreksi.
+Lihat [Bab 10](/TW-Photogram-Docs/panduan-pengguna/10-ekspor-interoperabilitas/#102-dem): GeoTIFF WGS 84 (datum keluaran terpilih), GeoTIFF UTM, ESRI ASCII Grid, XYZ. Semua ekspor numerik menyertakan NODATA dan informasi datum/koreksi.
 
 ---
 
-**Langkah berikutnya:** batasi area kerja dan tambahkan konteks administrasi di [Bab 6 — Shapes & batas wilayah](06-shapes-batas-wilayah.md).
+**Langkah berikutnya:** batasi area kerja dan tambahkan konteks administrasi di [Bab 6 — Shapes & batas wilayah](/TW-Photogram-Docs/panduan-pengguna/06-shapes-batas-wilayah/).

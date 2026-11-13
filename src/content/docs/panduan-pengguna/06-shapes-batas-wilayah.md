@@ -15,7 +15,7 @@ Setiap chunk membawa daftar **Shapes** (lapisan vektor) seperti Metashape. Sebua
 - **melabeli** wilayah administrasi di peta dan lembar peta;
 - **menampung** produk turunan (kontur, poligon bahaya banjir);
 - **statistik zonal** (luas, elevasi, volume galian/timbunan);
-- **memotong model Gaussian** ([Bab 9](09-gaussian-splatting.md)).
+- **memotong model Gaussian** ([Bab 9](/TW-Photogram-Docs/panduan-pengguna/09-gaussian-splatting/)).
 
 Hanya tiga CRS yang diterima: **WGS 84 lon/lat** (EPSG:4326), **WGS 84 / UTM** (EPSG:326xx/327xx), dan **ENU lokal** (meter survei). CRS lain ditolak saat impor dengan pesan eksplisit — reproyeksikan dulu di QGIS.
 
@@ -50,7 +50,7 @@ Mengunduh batas resmi yang memotong area survei (teks: *Unduh batas resmi yang m
 
 Hasil pencarian tampil sebagai daftar `Nama — induk, induk` dengan tombol **Tambahkan** per kandidat; atribusi penyedia tampil di bawahnya. Unduhan dibatasi ukurannya dan di-cache di direktori cache aplikasi, sehingga membuka proyek tidak mengunduh ulang.
 
-Lapisan administrasi yang dimuat otomatis dipakai sebagai baris **Lokasi (dari batas administrasi)** di dialog cetak ([Bab 8](08-cetak-laporan.md)).
+Lapisan administrasi yang dimuat otomatis dipakai sebagai baris **Lokasi (dari batas administrasi)** di dialog cetak ([Bab 8](/TW-Photogram-Docs/panduan-pengguna/08-cetak-laporan/)).
 
 ## 6.5 Gambar Poligon di Peta
 
@@ -120,10 +120,10 @@ Tombol **Ekspor…** di kartu lapisan membuka dialog simpan dengan filter **GeoJ
 | `.geojson` | WGS 84 (RFC 7946) | Dibaca QGIS, Global Mapper, web |
 | `.shp` | menulis `.shp/.shx/.dbf/.prj/.cpg` | CRS mengikuti lapisan |
 | `.kml` | WGS 84 | Google Earth |
-| `.dxf` | ENU lokal (meter) | Untuk AutoCAD; satukan dengan DEM XYZ UTM hanya setelah transformasi, lihat [Bab 10](10-ekspor-interoperabilitas.md#1010-autocad--cad) |
+| `.dxf` | ENU lokal (meter) | Untuk AutoCAD; satukan dengan DEM XYZ UTM hanya setelah transformasi, lihat [Bab 10](/TW-Photogram-Docs/panduan-pengguna/10-ekspor-interoperabilitas/#1010-autocad--cad) |
 
-Poligon bahaya banjir dapat ditambahkan ke Shapes dari dock **Genangan** ([Bab 7](07-simulasi-genangan.md#78-hasil--playback)).
+Poligon bahaya banjir dapat ditambahkan ke Shapes dari dock **Genangan** ([Bab 7](/TW-Photogram-Docs/panduan-pengguna/07-simulasi-genangan/#78-hasil-dan-playback)).
 
 ---
 
-**Langkah berikutnya:** gunakan DTM dan batas Anda untuk menjalankan [Bab 7 — Simulasi genangan](07-simulasi-genangan.md).
+**Langkah berikutnya:** gunakan DTM dan batas Anda untuk menjalankan [Bab 7 — Simulasi genangan](/TW-Photogram-Docs/panduan-pengguna/07-simulasi-genangan/).

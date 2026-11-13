@@ -6,10 +6,12 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
-import { resolve, dirname, join } from 'node:path';
+import { resolve, dirname, join, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 import { marked } from 'marked';
+import GithubSlugger from 'github-slugger';
+import { createRequire } from 'node:module';
 import markedKatex from 'marked-katex-extension';
 
 marked.use(markedKatex({ throwOnError: false }));
@@ -20,6 +22,31 @@ const SITE_DIR = resolve(__dirname, '..');
 const DOCS_DIR = join(SITE_DIR, 'src', 'content', 'docs');
 const DIST_DIR = join(SITE_DIR, 'dist');
 const OUT_PDF = join(DIST_DIR, 'TW-Photogram-Manual-Book.pdf');
+const PUBLIC_DIR = join(SITE_DIR, 'public');
+const BASE = (process.env.DOCS_BASE ?? '/TW-Photogram-Docs').replace(/\/$/, '');
+
+// Embed local screenshots so setContent() needs no server or deployment to load them.
+function embedImages(tokens, chapterPath) {
+  marked.walkTokens(tokens, (token) => {
+    if (token.type === 'link') {
+      const match = token.href.match(/^(?:\/TW-Photogram-Docs\/panduan-pengguna\/)?(\d{2}-[\w-]+)(?:\.md|\/)(#[^]*)?$/);
+      if (match) token.href = match[2] || '#' + match[1];
+    }
+    if (token.type !== 'image') return;
+    const href = token.href;
+    const local = href.startsWith(BASE + '/') ? href.slice(BASE.length) : href;
+    const path = local.startsWith('/')
+      ? resolve(PUBLIC_DIR, '.' + decodeURIComponent(local))
+      : resolve(dirname(chapterPath), decodeURIComponent(local));
+    if (!path.startsWith(PUBLIC_DIR + sep) && !path.startsWith(DOCS_DIR + sep)) {
+      throw new Error(`Screenshot must be a local documentation asset: ${href}`);
+    }
+    const mime = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp' }[extname(path).toLowerCase()];
+    if (!mime) throw new Error(`Unsupported screenshot format: ${href}`);
+    token.href = `data:${mime};base64,${readFileSync(path).toString('base64')}`;
+  });
+  return tokens;
+}
 
 // Daftar bab dan urutan file dokumen
 const CHAPTERS = [
@@ -90,6 +117,17 @@ function sanitizeMarkdown(md) {
   return md.replace(/^---[\s\S]*?---\s*/, '');
 }
 
+function embeddedKatexCss() {
+  const require = createRequire(import.meta.url);
+  const cssPath = require.resolve('katex/dist/katex.min.css');
+  return readFileSync(cssPath, 'utf8').replace(/url\(([^)]+)\)/g, (_, relative) => {
+    const path = resolve(dirname(cssPath), relative.replace(/["']/g, ''));
+    const mime = { '.woff2': 'font/woff2', '.woff': 'font/woff', '.ttf': 'font/ttf' }[extname(path)];
+    if (!mime) throw new Error(`Unsupported KaTeX font: ${path}`);
+    return `url(data:${mime};base64,${readFileSync(path).toString('base64')})`;
+  });
+}
+
 async function generatePdf() {
   console.log('🚀 Memulai kompilasi TW-Photogram Manual Book PDF...');
 
@@ -103,17 +141,11 @@ async function generatePdf() {
 <head>
   <meta charset="UTF-8">
   <title>TW-Photogram — Manual Book & Dokumentasi Resmi</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.19.1/dist/katex.min.css">
+  <style>${embeddedKatexCss()}</style>
   <style>
     @page {
       size: A4;
       margin: 20mm 15mm 20mm 15mm;
-      @bottom-center {
-        content: counter(page);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        font-size: 8pt;
-        color: #64748b;
-      }
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -208,6 +240,16 @@ async function generatePdf() {
     p, li {
       text-align: justify;
     }
+    img {
+      display: block;
+      max-width: 100%;
+      max-height: 170mm;
+      object-fit: contain;
+      margin: 0.75rem auto;
+      break-inside: avoid;
+    }
+    p:has(> img) { break-inside: avoid; break-after: avoid; }
+    p:has(> img) + p { break-before: avoid; }
     code {
       font-family: ui-monospace, Menlo, Consolas, monospace;
       font-size: 8.5pt;
@@ -288,12 +330,18 @@ async function generatePdf() {
     htmlBody += `<div class="chapter">`;
     for (const relPath of ch.files) {
       const fullPath = join(DOCS_DIR, relPath);
-      if (existsSync(fullPath)) {
-        const rawMd = readFileSync(fullPath, 'utf8');
-        const cleanMd = sanitizeMarkdown(rawMd);
-        const parsed = marked.parse(cleanMd);
-        htmlBody += parsed;
-      }
+      const rawMd = readFileSync(fullPath, 'utf8');
+      const cleanMd = sanitizeMarkdown(rawMd);
+      const slugger = new GithubSlugger();
+      const renderer = new marked.Renderer();
+      renderer.heading = function ({ tokens, depth, text }) {
+        const id = slugger.slug(text.replace(/<[^>]*>/g, '').replace(/[`*_]/g, (c) => c === '_' ? '_' : ''));
+        return `<h${depth} id="${id}">${this.parser.parseInline(tokens)}</h${depth}>\n`;
+      };
+      const chapterId = relPath.split('/').pop().replace(/\.md$/, '');
+      htmlBody += `<section id="${chapterId}">`;
+      htmlBody += marked.parser(embedImages(marked.lexer(cleanMd), fullPath), { renderer });
+      htmlBody += '</section>';
     }
     htmlBody += `</div>`;
   }
@@ -303,17 +351,28 @@ async function generatePdf() {
 </html>
 `;
 
+  const ids = new Set(Array.from(htmlBody.matchAll(/\bid="([^"]+)"/g), (m) => m[1]));
+  for (const [, fragment] of htmlBody.matchAll(/\bhref="#([^"]+)"/g)) {
+    if (!ids.has(decodeURIComponent(fragment))) throw new Error(`Missing PDF link target: #${fragment}`);
+  }
   const tempHtml = join(DIST_DIR, 'manual_book.html');
   writeFileSync(tempHtml, htmlBody, 'utf8');
   console.log(`✓ File HTML sementara dibuat: ${tempHtml}`);
 
-  try {
-    const browser = await puppeteer.launch({
+  const browser = await puppeteer.launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-    });
+  });
+  try {
     const page = await browser.newPage();
-    await page.setContent(htmlBody, { waitUntil: 'networkidle0', timeout: 60000 });
+    await page.setContent(htmlBody, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+      await Promise.all(Array.from(document.images, async (img) => {
+        await img.decode();
+        if (!img.naturalWidth) throw new Error(`Screenshot failed to load: ${img.alt}`);
+      }));
+    });
     await page.pdf({
       path: OUT_PDF,
       format: 'A4',
@@ -323,13 +382,13 @@ async function generatePdf() {
       headerTemplate: '<div></div>',
       footerTemplate: '<div style="width: 100%; font-size: 8pt; color: #94a3b8; text-align: center; font-family: sans-serif;"><span class="pageNumber"></span> / <span class="totalPages"></span></div>',
     });
-    await browser.close();
     console.log(`✅ Sukses mengompilasi PDF: ${OUT_PDF}`);
-  } catch (err) {
-    console.warn(`⚠️ Puppeteer belum tersedia di lingkungan lokal (${err.message}). File HTML telah disimpan; PDF akan dikompilasi secara otomatis di GitHub Actions.`);
+  } finally {
+    await browser.close();
   }
 }
 
 generatePdf().catch((err) => {
   console.error('Gagal generate PDF:', err);
+  process.exitCode = 1;
 });

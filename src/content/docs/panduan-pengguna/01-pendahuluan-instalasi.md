@@ -36,7 +36,7 @@ Antarmuka mengikuti tata letak Agisoft Metashape Professional: menu **Berkas / S
 | :-- | :-- |
 | Sistem operasi | macOS (Apple Silicon / Intel), Windows 10/11 64-bit, atau Linux x64 |
 | GPU | Driver grafis yang menyediakan OpenGL untuk viewport 3D. Pencocokan fitur dan peta kedalaman memakai GPU komputasi (Metal di macOS; DX12/Vulkan di Windows) bila tersedia |
-| RAM | Bergantung ukuran survei. 24 foto sampel 20 MP berjalan nyaman di 8 GB; blok ratusan foto membutuhkan 16–32 GB (lihat [Bab 11](11-pemecahan-masalah.md#1112-performa--memori)) |
+| RAM | Bergantung ukuran survei. 24 foto sampel 20 MP berjalan nyaman di 8 GB; blok ratusan foto membutuhkan 16–32 GB (lihat [Bab 11](/TW-Photogram-Docs/panduan-pengguna/11-pemecahan-masalah/#1112-performa-dan-memori)) |
 | Ruang disk | Proyek `.twp` menyimpan hasil (awan titik, DEM, ortho) dalam satu berkas; sediakan beberapa GB untuk survei besar. Pelatihan Gaussian menyalin seluruh foto ke folder dataset baru |
 | Jaringan | Hanya untuk fitur daring: basemap **Maps**, unduh batas administrasi (BIG, geoBoundaries, GADM), unduh DEMNAS dan geoid EGM2008. Pemrosesan fotogrametri sepenuhnya luring |
 | Toolchain (hanya bila membangun dari sumber) | Rust **1.98.1**, dipatok di `rust-toolchain.toml` (edisi 2024) |
@@ -87,7 +87,7 @@ Jendela selalu dibuka dalam keadaan termaksimalkan; ukuran minimum 1080 × 680 p
 | Variabel | Fungsi |
 | :-- | :-- |
 | `TW_DEPTH_BACKEND=cpu` | Memaksa peta kedalaman (Bangun Awan Titik) dihitung di CPU. Tanpa variabel ini aplikasi memakai GPU dan **tidak** diam-diam beralih ke CPU bila GPU gagal — kesalahan akan dilaporkan |
-| `TW_BRUSH_EXECUTABLE` | Lokasi binari trainer **Brush** untuk Gaussian Splatting (lihat [Bab 9](09-gaussian-splatting.md)) |
+| `TW_BRUSH_EXECUTABLE` | Lokasi binari trainer **Brush** untuk Gaussian Splatting (lihat [Bab 9](/TW-Photogram-Docs/panduan-pengguna/09-gaussian-splatting/)) |
 
 ## 1.4 Dataset Sampel
 
@@ -117,4 +117,4 @@ Bahasa bawaan adalah **Bahasa Indonesia (ID)**. Ubah ke **English (US)** lewat *
 
 ---
 
-**Langkah berikutnya:** jalankan aplikasi dengan `--sample`, lalu lanjut ke [Bab 2 — Mengenal antarmuka](02-antarmuka.md) untuk memahami tata letak jendela sebelum memproses data Anda sendiri.
+**Langkah berikutnya:** jalankan aplikasi dengan `--sample`, lalu lanjut ke [Bab 2 — Mengenal antarmuka](/TW-Photogram-Docs/panduan-pengguna/02-antarmuka/) untuk memahami tata letak jendela sebelum memproses data Anda sendiri.

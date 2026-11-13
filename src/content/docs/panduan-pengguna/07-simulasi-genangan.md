@@ -9,6 +9,179 @@ description: "Apa yang akan Anda lakukan: menjalankan simulasi genangan 2D di at
 
 ---
 
+## 7.0 Tutorial bergambar: dari foto mapping_01 sampai air terlihat
+
+**Jalur yang diuji:** aplikasi native macOS, 51 foto nyata `mapping_01`, penyelarasan → awan titik → klasifikasi tanah → DTM → orthomosaic → simulasi → playback. Jika proyek Anda sudah mempunyai DTM, langsung ke **langkah 7**.
+
+> **Sudah klik Jalankan simulasi tetapi air belum terlihat?** Tunggu hasil selesai, gulir **panel kanan** ke **HASIL & PLAYBACK**, lalu tekan **▶**. Pada simulasi pertama, waktu masih **0 menit** dan permukaan awal kering. Gunakan tampilan **Orthomosaic atau DEM**, bukan Maps.
+
+**Tentang screenshot.** Semua gambar di tutorial ini berasal dari aplikasi yang benar-benar dijalankan pada 13 November 2026: TW-Photogram **0.1.1-alpha**, bundle macOS terpasang bertanggal 6 November 2026, tema gelap, Bahasa Indonesia. Dialog pemrosesan dibuka kembali setelah pengujian untuk memperlihatkan pengaturannya; karena itu beberapa gambar bertuliskan **Proses Ulang** dan menampilkan hasil di latar belakang. Saat pertama kali memproses, tombolnya bertuliskan **Selaraskan Foto**, **Bangun Awan Titik**, dan seterusnya. Jangan mengulang tahap yang sudah berhasil hanya untuk mengikuti screenshot. Identitas binary dan daftar gambar dicatat di [catatan screenshot](/TW-Photogram-Docs/manual/img/README.md).
+
+### Langkah 1 — Masukkan 51 foto survei
+
+1. Mulai proyek kosong. Di dock **Workspace**, klik ikon folder bertanda **+** dengan tooltip **Tambah Folder…**.
+2. Pilih folder `mapping_01`, lalu klik **Open**. Untuk dataset ini, Workspace dan tab Photos harus menunjukkan **51 foto**.
+3. Tunggu thumbnail selesai dimuat. Sebelum penyelarasan, jumlah kamera selaras masih **0/51**. Foto yang sudah diproses dapat menunjukkan **51/51**, seperti proyek contoh di bawah.
+
+![Workspace berisi 51 foto mapping_01 beserta DTM dan orthomosaic hasil pengujian](/TW-Photogram-Docs/manual/img/07-proyek-mapping01.jpg)
+
+*Gambar 7-A. Proyek contoh setelah seluruh tahap selesai. Tombol Tambah Folder berada di kiri atas Workspace; hasil berikutnya muncul sebagai entri terpisah di bawah kamera.*
+
+### Langkah 2 — Selaraskan foto
+
+1. Klik tombol **1. Selaraskan Foto (SfM)…** di toolbar atas; arahkan pointer ke ikon untuk membaca tooltip. Pada menu native macOS, tindakan yang sama bernama **Workflow → Align Photos…**.
+2. Untuk mengulang contoh ini, biarkan **High**, **40.000 key points**, dan **4.000 tie points** seperti pada dialog.
+3. Klik **Selaraskan Foto**, tunggu dialog proses selesai, lalu periksa Workspace atau status bar. Pengujian ini menghasilkan **51/51 kamera selaras** dan **20.450 titik ikat**. Angka ini adalah catatan satu pengujian, bukan syarat bahwa setiap komputer harus menghasilkan jumlah titik identik.
+
+![Dialog penyelarasan foto dengan High, 40000 key points, 4000 tie points dan hasil 51 dari 51 kamera](/TW-Photogram-Docs/manual/img/07-dialog-align.jpg)
+
+*Gambar 7-B. Dialog dibuka kembali setelah penyelarasan; panel hijau mengonfirmasi bahwa tahap sudah selesai.*
+
+### Langkah 3 — Bangun awan titik
+
+1. Klik **3. Bangun Awan Titik (MVS)…** atau **Workflow → Build Point Cloud…**.
+2. Pada build yang diuji, dialog menampilkan **Kualitas 1,00** dan **Filter Kedalaman Moderate**. Gunakan pengaturan tersebut untuk contoh ini.
+3. Klik **Bangun Awan Titik** dan tunggu entri **Awan Titik (Dense Cloud)** muncul. Pengujian menghasilkan **3.315.976 titik**. Status siap saja belum berarti DTM sudah tersedia; lanjutkan klasifikasi tanah.
+
+![Dialog Bangun Awan Titik dengan pengaturan kualitas dan konfirmasi 3315976 titik](/TW-Photogram-Docs/manual/img/07-dialog-dense.jpg)
+
+*Gambar 7-C. Awan titik sudah selesai dibangun; tombol Proses Ulang hanya digunakan bila sengaja mengubah pengaturan.*
+
+### Langkah 4 — Klasifikasikan tanah
+
+1. Di **Workspace**, klik kanan entri **Awan Titik (Dense Cloud)**.
+2. Pilih **Klasifikasi Titik Tanah (CSF)…**. Jalur klik kanan ini tersedia pada build macOS yang diuji.
+3. Gunakan **Ukuran Sel 3,0 m** dan **Batas Jarak Kain 0,30 m**, lalu klik **Klasifikasikan Titik**. Ini ukuran sel klasifikasi, berbeda dari ukuran sel simulasi banjir pada langkah 8.
+4. Tunggu selesai. Pengujian menghasilkan **1.486.617 titik Ground / kelas 2**. Periksa hasil klasifikasi sebelum memakainya untuk analisis lokasi lain.
+
+![Menu klik kanan Awan Titik dengan pilihan Klasifikasi Titik Tanah CSF](/TW-Photogram-Docs/manual/img/07-menu-ground.jpg)
+
+*Gambar 7-D. Buka klasifikasi dari entri Awan Titik di Workspace.*
+
+![Dialog CSF dengan ukuran sel 3 meter, jarak kain 0,30 meter, dan jumlah titik Ground](/TW-Photogram-Docs/manual/img/07-dialog-ground.jpg)
+
+*Gambar 7-E. Setelah berhasil, dialog menampilkan jumlah titik tanah. DTM memerlukan titik Ground; mengganti label permukaan saja tidak melakukan klasifikasi.*
+
+### Langkah 5 — Bangun DTM
+
+1. Klik **7. Bangun Model Elevasi (DEM)…**.
+2. Pilih **Permukaan → DTM — Ground / Tanah (class 2)**; setelah dipilih, kotak menampilkan **Ground**.
+3. Pilih **Sumber Data: Dense cloud**, **Interpolasi: Enabled (default)**, dan biarkan **Kustom** tidak dicentang untuk resolusi otomatis. Tutorial ini tidak memakai poligon batas.
+4. Klik **Bangun DEM**. Tunggu entri DEM di Workspace. Pada pengujian: **1.860 × 1.672 piksel**, sekitar **0,147 m/piksel**.
+5. Periksa permukaan di **Ortho → DEM**. Bila muncul pesan membutuhkan titik Ground, kembali ke langkah 4; jangan mengganti ke DSM hanya untuk melewati pesan tersebut.
+
+![Dialog DEM dengan permukaan Ground, sumber Dense cloud, interpolasi Enabled dan resolusi otomatis](/TW-Photogram-Docs/manual/img/07-dialog-dtm.jpg)
+
+*Gambar 7-F. Pilihan Ground membedakan DTM tanah dari DSM permukaan. Angka resolusi otomatis dapat berbeda dari GSD ringkasan pada status bar.*
+
+### Langkah 6 — Bangun orthomosaic sebagai latar foto
+
+1. Klik **8. Bangun Ortomosaik…** atau **Workflow → Build Orthomosaic…**.
+2. Klik **Bangun Ortomosaik** dan tunggu proses selesai. Pada pengujian ini ukurannya **7.438 × 6.685 piksel**, sekitar **0,037 m/piksel**.
+3. Buka **Ortho → Orthomosaic** untuk memeriksa foto orto. Orthomosaic menjadi latar tampilan; perhitungan banjir tetap memakai DEM/DTM. Jika hanya ingin membaca air di atas DEM, tahap orthomosaic tidak wajib.
+
+![Dialog orthomosaic dengan permukaan acuan DEM atau Mesh dan mode mosaik dominan nadir](/TW-Photogram-Docs/manual/img/07-dialog-ortho.jpg)
+
+*Gambar 7-G. Dialog orthomosaic dibuka kembali setelah hasil terbentuk.*
+
+### Langkah 7 — Buka tampilan yang mendukung genangan
+
+Klik tab **Ortho**, pilih ikon **Orthomosaic** atau ikon **DEM** (gunung), kemudian klik **Genangan**. Panel kanan berjudul **SIMULASI GENANGAN 2D**. Bila masih terbuka dock **Batas**, pilih tab **Genangan** di bagian atas dock kanan.
+
+| Tampilan pada build yang diuji | Hasil genangan |
+| :-- | :-- |
+| Ortho → Orthomosaic | Overlay air dan partikel aliran terlihat di atas foto orto |
+| Ortho → DEM | Overlay air terlihat di atas elevasi |
+| Ortho → Maps | Basemap dan orthomosaic terlihat, tetapi overlay banjir **belum digambar** |
+| Model 3D | Bukan viewport simulasi genangan 2D |
+
+**Hujan bukan animasi tetesan.** Grafik *Pratinjau intensitas hujan* menunjukkan input hujan. Visual yang tersedia adalah genangan dan partikel yang mengikuti aliran hasil solver. Tidak munculnya tetesan hujan bukan tanda bahwa input hujan diabaikan.
+
+### Langkah 8 — Masukkan skenario reproduksi
+
+Gunakan tabel ini untuk mengikuti contoh `mapping_01`. **Ini skenario demonstrasi yang diuji, bukan parameter rekomendasi untuk semua lokasi atau kalibrasi banjir lapangan.**
+
+| Kontrol | Nilai contoh |
+| :-- | :-- |
+| Model | Inersial lokal (Bates 2010) |
+| Ukuran sel simulasi | **2,0 m**; grid efektif pada data ini **2,06 m**, 133 × 120 sel |
+| Frame | 60 |
+| Kehilangan | Koefisien limpasan C |
+| Kelas bahaya | ARR 2019 (H1–H6) |
+| Intensitas hujan | **50 mm/jam** |
+| Lama simulasi | **3.600 detik** (60 menit) |
+| Durasi hujan | **0** (hujan sepanjang simulasi, bukan tanpa hujan) |
+| Koefisien limpasan C | **0,85** |
+| Kekasaran Manning n | **0,035** |
+| Air keluar batas grid | Tidak dicentang: contoh memakai batas tertutup |
+| Elevasi air tetap, debit titik, penampang, zona dan bukaan tanggul | Tidak diaktifkan |
+
+Untuk mengisi angka, klik dua kali nilai, pilih seluruh teks (**Cmd+A** di macOS), ketik nilai baru, lalu tekan **Enter**. Memperbesar sel simulasi mengagregasi DTM untuk perhitungan dan tidak mengganti raster DTM proyek.
+
+![Panel model dan hujan dengan sel 2 meter, intensitas 50 mm per jam serta durasi simulasi 3600 detik](/TW-Photogram-Docs/manual/img/07-parameter-hujan.jpg)
+
+*Gambar 7-H. Bagian atas dock Genangan. Gambar diambil setelah pengujian, sehingga hasil air masih terlihat di latar belakang.*
+
+**Hindari langsung memakai ukuran sel 0 untuk percobaan pertama.** Nilai 0 memakai resolusi DEM asli. Pada DTM ini panel memperkirakan sekitar **2.276 MB snapshot** dan **4.324 detik** untuk sel asli; sel 2 m menghasilkan sekitar **12 MB snapshot**. Estimasi waktu panel bukan janji durasi aktual: pada pengujian, perhitungan sel 2 m juga tidak selesai seketika meskipun panel menampilkan `~2 s`.
+
+### Langkah 9 — Jalankan, tunggu selesai, lalu tekan Play
+
+1. **Gulir di dalam panel kanan**, melewati grafik hujan, sampai bagian **BATAS & SUMBER AIR** dan tombol **Jalankan simulasi** terlihat. Menggulir di atas peta akan melakukan zoom, bukan menggulir panel.
+2. Klik **Jalankan simulasi** sekali. Selama menghitung, tombol berubah menjadi **Batalkan** dan ada spinner. Aplikasi belum menampilkan frame hasil baru pada tahap ini.
+3. Tunggu **HASIL & PLAYBACK** muncul. Angka volume menunjukkan bahwa hasil sudah tersedia. Pengujian ini mencatat hujan efektif dan volume akhir sekitar **1.915,13 m³**, hujan bruto **2.253,09 m³**, infiltrasi **337,96 m³**, dan residu volume mendekati nol.
+4. Pada hasil pertama, slider **Waktu = 0**. **Tekan ▶ di baris HASIL & PLAYBACK**. Tombol berubah menjadi **⏸**, angka waktu bergerak, dan air muncul di sel yang basah.
+
+![Hasil simulasi tersedia tetapi Waktu nol dan belum ada air di atas orthomosaic](/TW-Photogram-Docs/manual/img/07-waktu-nol.jpg)
+
+*Gambar 7-I. Kondisi awal kering pada waktu 0, ditampilkan kembali dengan tombol Ke awal. Tombol ▶ adalah tombol pertama di bawah HASIL & PLAYBACK; volume ringkasan sudah ada walaupun frame saat ini masih kering.*
+
+![Genangan biru dan partikel aliran pada orthomosaic mapping_01 setelah playback berjalan](/TW-Photogram-Docs/manual/img/07-playback-ortho.jpg)
+
+*Gambar 7-J. Hasil setelah menekan ▶, kemudian dijeda sekitar menit ke-56 agar mudah dibandingkan. Biru adalah genangan hasil perhitungan; titik putih adalah partikel aliran, bukan tetesan hujan.*
+
+![Hasil pada waktu yang sama di atas DEM dengan panel playback dan volume](/TW-Photogram-Docs/manual/img/07-playback-dem.jpg)
+
+*Gambar 7-K. Hasil yang sama di tampilan DEM. Berpindah antara DEM dan Orthomosaic tidak perlu menjalankan simulasi ulang.*
+
+### Langkah 10 — Baca hasil, bandingkan, dan ekspor
+
+- **⏸ / ▶:** jeda atau lanjutkan waktu. Riak permukaan dapat tetap bergerak ketika waktu dijeda.
+- **Slider Waktu:** setelah pause, geser untuk memeriksa waktu tertentu. **⏮** kembali ke awal yang mungkin kering; **⏭** maju satu frame.
+- **Otomatis (300×)** pada skenario satu jam ini memutar seluruh durasi dalam sekitar 12 detik. **Ulang** mengembalikan waktu ke awal setelah mencapai akhir; pilih kecepatan lebih rendah untuk mengamati perkembangan.
+- **Kedalaman puncak:** melihat sel yang pernah tergenang selama skenario tanpa perlu memutar waktu. Ini bukan kedalaman serentak pada satu waktu.
+- **Kelas bahaya:** membaca hasil klasifikasi bersama legenda luas. Klasifikasi skenario ini bukan peta risiko resmi atau bukti akurasi elevasi lapangan.
+- **Ekspor GeoTIFF:** gulir lebih bawah dan pilih **kedalaman saat ini**, **kedalaman puncak**, atau **kelas bahaya**. Untuk kedalaman saat ini, pause dan pilih waktu terlebih dahulu. Tentukan nama dan lokasi berkas pada dialog ekspor.
+
+![Lapisan Kedalaman puncak dipilih dan menampilkan sel yang pernah basah di atas DTM](/TW-Photogram-Docs/manual/img/07-hasil-kedalaman.jpg)
+
+*Gambar 7-L. Kedalaman puncak membantu memastikan ada hasil basah tanpa bergantung pada posisi slider waktu.*
+
+![Lapisan Kelas bahaya ARR 2019 dengan legenda luas kelas dan tombol ekspor GeoTIFF](/TW-Photogram-Docs/manual/img/07-hasil-bahaya.jpg)
+
+*Gambar 7-M. Pilih Kelas bahaya, baca legenda, lalu gunakan tombol ekspor yang sesuai.*
+
+### Jika tetap tidak terlihat
+
+![Maps menampilkan basemap dan orthomosaic tetapi tanpa overlay banjir meskipun hasil tersedia](/TW-Photogram-Docs/manual/img/07-maps-tanpa-genangan.jpg)
+
+*Gambar 7-N. Hasil dan waktu sama dengan pembanding DEM/ortho, tetapi Maps tidak menggambar air pada build ini. Kembali ke Orthomosaic atau DEM; mengulang solver tidak memperbaiki keterbatasan tampilan Maps.*
+
+| Yang terlihat | Tindakan |
+| :-- | :-- |
+| Tombol Batalkan dan spinner | Perhitungan belum selesai; tunggu. Untuk percobaan berikutnya gunakan sel 2 m, bukan resolusi asli yang sangat rapat. |
+| Hasil tersedia, Waktu 0, peta kering | Gulir ke HASIL & PLAYBACK dan tekan **▶**, atau pilih **Kedalaman puncak**. |
+| Panel hanya memperlihatkan parameter hujan | Gulir **panel kanan** lebih bawah; kontrol hasil berada setelah parameter dan informasi model. |
+| Waktu bergerak tetapi Maps tidak menampilkan air | Pilih **Orthomosaic atau DEM**. Ini keterbatasan build yang diuji. |
+| Tidak ada efek tetesan hujan | Efek tersebut belum tersedia; periksa grafik hujan dan hasil genangan. |
+| Beralih ke Batas lalu pembaruan hasil/waktu berhenti | Buka kembali dock **Genangan**. Polling/playback masih bergantung pada dock pada implementasi ini. |
+| Parameter/DEM berubah; hasil hilang | Jalankan ulang setelah semua perubahan selesai; hasil lama memang dibatalkan. |
+| Pesan Renderer air | Baca pesan; renderer memakai overlay sederhana jika GPU gagal. |
+| Kedalaman puncak juga kosong | Periksa input hujan/debit, infiltrasi, domain DTM dan pesan kesalahan. Jangan menganggap setiap skenario harus menghasilkan banjir terlihat. |
+
+**Batas verifikasi:** pengujian layar ini membuktikan alur pemakaian dan tampilan pada data nyata, bukan akurasi vertikal survei atau kalibrasi hidrologi. Status aplikasi mencatat **GCP belum dievaluasi**. Untuk penggunaan operasional, periksa DTM, datum, batas domain, dan parameter setempat.
+
+---
+
 ## 7.1 Prasyarat
 
 1. **DTM** (Permukaan = *DTM — Ground*) — teks di dock: *Gunakan DTM (Ground) untuk hasil aliran yang benar.* DSM akan menahan air di atas atap dan tajuk.
@@ -136,6 +309,8 @@ Header lipat dengan teks *Penurunan DEM terparametrisasi, bukan prediksi keruntu
 
 ## 7.7 Menjalankan
 
+**Sesudah selesai, gulir ke HASIL & PLAYBACK dan tekan ▶.** Hasil awal berada pada waktu 0 dan bisa seluruhnya transparan. Gunakan **Ortho → Orthomosaic atau DEM**; Maps belum menggambar overlay banjir pada build yang diuji.
+
 Tombol **Jalankan simulasi** (aktif bila ada DEM). Selama berjalan tampil spinner dan tombol **Batalkan**; **Hapus hasil** membuang hasil lama. Simulasi berjalan di thread latar; peta tetap bisa digeser.
 
 ⚠️ Mengubah parameter apa pun setelah simulasi membatalkan hasil (*Parameter berubah; jalankan ulang simulasi.*); demikian pula mengganti DEM (*DEM berubah; jalankan ulang simulasi.*).
@@ -188,8 +363,8 @@ Poligon kelas ditelusuri sepanjang tepi sel, sehingga luas poligon = jumlah sel 
 
 ## 7.10 Ke Lembar Peta
 
-Setelah simulasi, dialog **Cetak Lembar Peta / Laporan** menawarkan lapisan **Bahaya banjir** dan opsi **Sertakan lembar bahaya banjir** (lembar `FLOOD-01`) pada laporan lengkap ([Bab 8](08-cetak-laporan.md)).
+Setelah simulasi, dialog **Cetak Lembar Peta / Laporan** menawarkan lapisan **Bahaya banjir** dan opsi **Sertakan lembar bahaya banjir** (lembar `FLOOD-01`) pada laporan lengkap ([Bab 8](/TW-Photogram-Docs/panduan-pengguna/08-cetak-laporan/)).
 
 ---
 
-**Langkah berikutnya:** susun hasil Anda menjadi dokumen resmi di [Bab 8 — Cetak lembar peta & laporan](08-cetak-laporan.md).
+**Langkah berikutnya:** susun hasil Anda menjadi dokumen resmi di [Bab 8 — Cetak lembar peta & laporan](/TW-Photogram-Docs/panduan-pengguna/08-cetak-laporan/).

@@ -67,7 +67,7 @@ description: "Apa yang akan Anda lakukan: mendiagnosis kegagalan dan hasil aneh 
 
 | Gejala | Solusi |
 | :-- | :-- |
-| `Imported N references. Mark them in photos before Optimize Cameras.` tetapi residual `-` | Marker belum disematkan di foto. Lihat [§3.6](03-memulai-proyek.md#36-menandai-gcp-pada-foto); minimal 2 foto per marker |
+| `Imported N references. Mark them in photos before Optimize Cameras.` tetapi residual `-` | Marker belum disematkan di foto. Lihat [§3.6](/TW-Photogram-Docs/panduan-pengguna/03-memulai-proyek/#36-menandai-gcp-pada-foto); minimal 2 foto per marker |
 | Residual satu GCP jauh lebih besar | Salah klik target, atau koordinat lapangan salah/tertukar X-Y. Periksa **Proy**, sematkan ulang; ubah peran ke **Checkpoint** atau **Disabled** untuk menguji |
 | Semua residual bias Z sama arah | Datum tinggi CSV ≠ datum sumber kamera. Set datum di dialog impor |
 | RMSE bagus tetapi checkpoint buruk | Overfitting dengan GCP terlalu sedikit/terkumpul. Tambah GCP di tepi blok |
@@ -97,6 +97,18 @@ description: "Apa yang akan Anda lakukan: mendiagnosis kegagalan dan hasil aneh 
 | **Potong DEM sekarang** nonaktif | Tidak ada lapisan berperan batas atau DEM | Set **Peran: Batas luar** |
 
 ## 11.9 Simulasi Genangan
+
+Mulai dari [tutorial bergambar mapping_01](/TW-Photogram-Docs/panduan-pengguna/07-simulasi-genangan/#70-tutorial-bergambar-dari-foto-mapping_01-sampai-air-terlihat). Pada build macOS 0.1.1-alpha yang diuji, **Jalankan simulasi tidak otomatis menekan Play**.
+
+| Gejala tampilan | Pemeriksaan dan solusi |
+| :-- | :-- |
+| Hasil selesai tetapi air tidak terlihat, Waktu 0 | Gulir dock kanan ke **HASIL & PLAYBACK**, tekan **▶** atau pilih **Kedalaman puncak**. |
+| Tidak menemukan tombol Play | Gulir di dalam panel kanan, bukan di atas peta. Kontrol berada di bawah parameter. |
+| Waktu bergerak di Maps tetapi air hilang | Maps belum menggambar overlay banjir. Gunakan **Ortho → Orthomosaic atau DEM**. |
+| Tidak ada tetesan hujan | Visual tetesan belum tersedia; hujan masuk ke perhitungan, grafik menunjukkan intensitas. |
+| Pembaruan berhenti setelah membuka Batas | Buka kembali dock **Genangan**; ini keterbatasan polling/playback UI yang diketahui. |
+| Spinner masih berjalan | Hasil belum selesai. Estimasi waktu hanya perkiraan; sel 0 memakai resolusi DEM asli dan dapat sangat mahal. |
+
 
 | Gejala | Solusi |
 | :-- | :-- |
@@ -149,4 +161,4 @@ Sertakan: versi (**Tentang TW Photogaram**), OS dan GPU/driver, cuplikan Console
 
 ---
 
-**Langkah berikutnya:** istilah yang belum jelas dapat dicari di [Bab 12 — Glosarium & referensi](12-glosarium-referensi.md).
+**Langkah berikutnya:** istilah yang belum jelas dapat dicari di [Bab 12 — Glosarium & referensi](/TW-Photogram-Docs/panduan-pengguna/12-glosarium-referensi/).

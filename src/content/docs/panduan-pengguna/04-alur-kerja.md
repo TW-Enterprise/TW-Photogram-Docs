@@ -5,6 +5,9 @@ description: "Apa yang akan Anda lakukan: menjalankan tahapan fotogrametri dari 
 
 **Apa yang akan Anda lakukan:** menjalankan tahapan fotogrametri dari foto mentah hingga ortomosaik dan model 3D, memahami setiap parameter dialog, memilih nilai yang tepat, memperkirakan waktu, membaca hasil di antarmuka, dan mengenali kesalahan yang umum terjadi.
 
+
+**Ingin menjalankan hujan dan genangan?** Ikuti [tutorial bergambar mapping_01 dari foto sampai Play](/TW-Photogram-Docs/panduan-pengguna/07-simulasi-genangan/#70-tutorial-bergambar-dari-foto-mapping_01-sampai-air-terlihat), dengan screenshot aplikasi macOS dan pemeriksaan hasil setiap tahap.
+
 ---
 
 ## 4.0 Urutan dan Ketergantungan
@@ -107,7 +110,7 @@ Aplikasi memeriksa prasyarat setiap kali Anda membuka tahap. Bila tidak terpenuh
 | Gejala | Solusi |
 | :-- | :-- |
 | *Foto udara belum diselaraskan* | Jalankan tahap 1 |
-| Kegagalan GPU / adaptor tidak didukung dilaporkan di Console | Jalankan dengan `TW_DEPTH_BACKEND=cpu` ([Bab 11](11-pemecahan-masalah.md)) |
+| Kegagalan GPU / adaptor tidak didukung dilaporkan di Console | Jalankan dengan `TW_DEPTH_BACKEND=cpu` ([Bab 11](/TW-Photogram-Docs/panduan-pengguna/11-pemecahan-masalah/)) |
 | Awan titik "berisik" di atap/pohon | Naikkan filter ke Moderate/Aggressive atau naikkan Kualitas |
 | Memori habis | Turunkan Kualitas; proses chunk lebih kecil lalu gabungkan |
 
@@ -189,7 +192,7 @@ Memecah mesh menjadi quadtree multiresolusi untuk rendering area luas. Node **Ti
 
 **Menu:** Alur Kerja → **7. Bangun Model Elevasi (DEM)…** · **Dialog:** *Bangun Model Elevasi Digital (DEM)* · **Tombol:** **Bangun DEM**
 
-Tahap ini dibahas lengkap di [Bab 5](05-dem-kontur-lereng.md). Ringkasan parameter:
+Tahap ini dibahas lengkap di [Bab 5](/TW-Photogram-Docs/panduan-pengguna/05-dem-kontur-lereng/). Ringkasan parameter:
 
 | Label | Pilihan | Bawaan |
 | :-- | :-- | :-- |
@@ -208,7 +211,7 @@ Setelah selesai aplikasi berpindah ke tab Ortho lapisan DEM. Waktu: detik hingga
 
 **Menu:** Alur Kerja → **Kalibrasi Elevasi…** · **Dialog:** *Kalibrasi Elevasi*
 
-Bukan tahap bernomor, tetapi berada di antara DEM dan ortho karena memerlukan DEM. Mengatur datum tinggi sumber/keluaran, geoid, pembandingan dengan DEMNAS, dan penerapan offset. Lihat [§5.6](05-dem-kontur-lereng.md#56-kalibrasi-elevasi--demnas).
+Bukan tahap bernomor, tetapi berada di antara DEM dan ortho karena memerlukan DEM. Mengatur datum tinggi sumber/keluaran, geoid, pembandingan dengan DEMNAS, dan penerapan offset. Lihat [§5.6](/TW-Photogram-Docs/panduan-pengguna/05-dem-kontur-lereng/#56-kalibrasi-elevasi-dan-demnas).
 
 ---
 
@@ -284,7 +287,7 @@ Setelah menggabungkan, bangun ulang DEM dan ortho pada chunk gabungan. Dalam Pro
 
 **Tujuan.** Menjalankan ulang bundle adjustment Levenberg-Marquardt dengan memasukkan pengamatan GCP berbobot (σ XY/Z) untuk menyempurnakan panjang fokus, titik utama, distorsi radial/tangensial, dan pose kamera, serta menghitung residual GCP dan checkpoint.
 
-Tidak ada dialog parameter. Prasyarat: ≥ 2 kamera selaras; untuk manfaat penuh, marker **Control** tersemat pada ≥ 2 foto masing-masing ([§3.6](03-memulai-proyek.md#36-menandai-gcp-pada-foto)). Checkpoint tidak dipakai dalam *fitting* sehingga statistiknya independen.
+Tidak ada dialog parameter. Prasyarat: ≥ 2 kamera selaras; untuk manfaat penuh, marker **Control** tersemat pada ≥ 2 foto masing-masing ([§3.6](/TW-Photogram-Docs/panduan-pengguna/03-memulai-proyek/#36-menandai-gcp-pada-foto)). Checkpoint tidak dipakai dalam *fitting* sehingga statistiknya independen.
 
 **Membaca hasil.** Tabel Marker: **dX dY dZ (cm)**, **Total**; pil **Total GCP RMSE**; baris **Checkpoint:**. Properties → **GCP Accuracy** dan **Reprojection**. Kartu Camera Calibration berubah.
 
@@ -315,4 +318,4 @@ Selama berjalan, dialog progres menampilkan **Antrean Batch Aktif**, **Proses Be
 
 ---
 
-**Langkah berikutnya:** pelajari opsi DEM lebih dalam, buat kontur dan peta lereng di [Bab 5 — DEM, kontur & lereng](05-dem-kontur-lereng.md).
+**Langkah berikutnya:** pelajari opsi DEM lebih dalam, buat kontur dan peta lereng di [Bab 5 — DEM, kontur & lereng](/TW-Photogram-Docs/panduan-pengguna/05-dem-kontur-lereng/).
